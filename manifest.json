@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Archive.is Redirector",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Automatically redirects specified websites to archive.is/newest/[original_url]",
   "permissions": ["storage", "webNavigation"],
   "host_permissions": [
@@ -17,7 +17,7 @@
       "128": "images/icon128.png"
     },
     "default_title": "Archive.is Redirector",
-    "default_popup": "popup.html"
+    "default_popup": "options.html"
   },
   "options_ui": {
     "page": "options.html",
