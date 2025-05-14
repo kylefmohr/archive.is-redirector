@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Archive.is Redirector",
+  "version": "1.1",
+  "description": "Automatically redirects specified websites to archive.is/newest/[original_url]",
+  "permissions": ["storage", "webNavigation"],
+  "host_permissions": [
+    "https://raw.githubusercontent.com/kylefmohr/archive.is-redirector/main/recommended_domains.json"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    },
+    "default_title": "Archive.is Redirector",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}

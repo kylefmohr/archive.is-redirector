@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Archive.is Redirector Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #333;
+      font-size: 1.5em;
+    }
+    h2 {
+      font-size: 1.2em;
+      color: #555;
+      margin-top: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+    .domain-list {
+      margin: 15px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .domain-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .domain-item:last-child {
+      border-bottom: none;
+    }
+    .domain-controls {
+      margin-top: 15px;
+    }
+    .domain-controls input[type="text"] {
+      padding: 5px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .domain-controls button, .preset-controls button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+    .domain-controls button:hover, .preset-controls button:hover {
+      background-color: #3367d6;
+    }
+    .preset-controls button.reset {
+      background-color: #f44242;
+      margin-left: 5px; /* Ensure spacing */
+    }
+    .preset-controls button.reset:hover {
+      background-color: #d63636;
+    }
+    .preset-controls button.recommended {
+      background-color: #34a853; /* Green for recommended */
+      margin-left: 0; /* First button in its group */
+    }
+    .preset-controls button.recommended:hover {
+      background-color: #2c8f48;
+    }
+    .delete-btn {
+      background-color: #f44242;
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background-color: #d63636;
+    }
+    .info {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #666;
+    }
+    .options-section {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+    }
+    .options-section div {
+      margin-bottom: 10px;
+    }
+    .options-section label {
+      margin-left: 8px;
+      user-select: none;
+    }
+    .preset-controls {
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    #recommendedDomainsStatus {
+        margin-left: 10px;
+        font-size: 0.9em;
+        color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Archive.is Redirector Settings</h1>
+  
+  <h2>Domain Management</h2>
+  <p>Add domains individually, or load a recommended set.</p>
+  
+  <div class="domain-controls">
+    <input type="text" id="newDomain" placeholder="Enter domain (e.g., example.com)">
+    <button id="addDomain">Add Domain</button>
+  </div>
+
+  <div class="preset-controls">
+    <button id="loadRecommendedDomains" class="recommended">Use Recommended Domains</button>
+    <button id="clearAllDomains" class="reset">Clear All Domains</button>
+    <span id="recommendedDomainsStatus"></span>
+  </div>
+  
+  <div class="domain-list" id="domainList">
+    <!-- Domains will be listed here dynamically -->
+  </div>
+  
+  <div class="info">
+    <p><strong>Format:</strong> Enter domains without "www." or "http://". For example, use "example.com" not "www.example.com" or "https://example.com".</p>
+    <p><strong>How it works:</strong> When you visit any URL from the domains listed above, the extension will automatically redirect you to archive.is/newest/[original_url].</p>
+  </div>
+
+  <div class="options-section">
+    <h2>Behavior Options</h2>
+    <div>
+      <input type="checkbox" id="skipHomepageRedirect" name="skipHomepageRedirect">
+      <label for="skipHomepageRedirect">Do not redirect on domain homepages (e.g., example.com/)</label>
+    </div>
+    <div class="info" style="margin-top: 0; font-size: 0.85em;">
+        If checked, only subpages (e.g., example.com/article.html) will be redirected, not the main domain page.
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
