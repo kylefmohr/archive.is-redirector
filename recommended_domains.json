@@ -1,1 +1,15 @@
-{"domains":["hhs.gov", "whitehouse.gov"]}
+{
+    "domains": [
+        "nytimes.com",
+        "rollingstone.com",
+        "wsj.com",
+        "theguardian.com",
+        "bbc.com",
+        "cnn.com",
+        "washingtonpost.com",
+        "theatlantic.com",
+        "forbes.com",
+        "bloomberg.com",
+        "ft.com"
+    ]
+}
