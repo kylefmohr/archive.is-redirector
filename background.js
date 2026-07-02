@@ -1,16 +1,21 @@
 const DEFAULT_DOMAINS = [];
 
 const SKIP_HOMEPAGE_REDIRECT_KEY = 'skipHomepageRedirectEnabled';
+const ARCHIVE_DOMAIN_KEY = 'archiveDomain';
+const DEFAULT_ARCHIVE_DOMAIN = 'archive.is';
 
 // Initialize storage with default settings if none exist
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.get(['domains', SKIP_HOMEPAGE_REDIRECT_KEY], (result) => {
+  chrome.storage.sync.get(['domains', SKIP_HOMEPAGE_REDIRECT_KEY, ARCHIVE_DOMAIN_KEY], (result) => {
     const itemsToSet = {};
     if (result.domains === undefined) {
       itemsToSet.domains = []; // Default to empty array
     }
     if (result[SKIP_HOMEPAGE_REDIRECT_KEY] === undefined) {
       itemsToSet[SKIP_HOMEPAGE_REDIRECT_KEY] = true; // Default to true (skip homepages)
+    }
+    if (result[ARCHIVE_DOMAIN_KEY] === undefined) {
+      itemsToSet[ARCHIVE_DOMAIN_KEY] = DEFAULT_ARCHIVE_DOMAIN;
     }
     if (Object.keys(itemsToSet).length > 0) {
       chrome.storage.sync.set(itemsToSet);
@@ -57,19 +62,20 @@ function checkAndRedirectUrl(url, tabId, isBeforeNavigate = false) {
     const hostname = parsedUrl.hostname;
     const pathname = parsedUrl.pathname;
     
-    if (hostname.includes('archive.is') || hostname.includes('archive.today')) {
+    if (hostname.includes('archive.is') || hostname.includes('archive.today') || hostname.includes('archive.ph')) {
       return;
     }
     
-    chrome.storage.sync.get(['domains', SKIP_HOMEPAGE_REDIRECT_KEY], (result) => {
+    chrome.storage.sync.get(['domains', SKIP_HOMEPAGE_REDIRECT_KEY, ARCHIVE_DOMAIN_KEY], (result) => {
       const domainsToRedirect = result.domains || DEFAULT_DOMAINS; // Will be [] if not set or cleared
       if (!domainsToRedirect || domainsToRedirect.length === 0) { // No domains to redirect
           return;
       }
       
-      const skipHomepageEnabled = result[SKIP_HOMEPAGE_REDIRECT_KEY] === undefined ? true : result[SKIP_HOMEPAGE_REDIRECT_KEY];
+    const skipHomepageEnabled = result[SKIP_HOMEPAGE_REDIRECT_KEY] === undefined ? true : result[SKIP_HOMEPAGE_REDIRECT_KEY];
+    const archiveDomain = result[ARCHIVE_DOMAIN_KEY] || DEFAULT_ARCHIVE_DOMAIN;
 
-      for (const listedDomain of domainsToRedirect) {
+    for (const listedDomain of domainsToRedirect) {
         if (hostname === listedDomain || hostname.endsWith('.' + listedDomain)) {
           let shouldRedirect = true; 
 
@@ -80,7 +86,7 @@ function checkAndRedirectUrl(url, tabId, isBeforeNavigate = false) {
 
           if (shouldRedirect) {
             const baseUrl = parsedUrl.origin + pathname;
-            const targetUrl = 'https://archive.is/newest/' + baseUrl;
+            const targetUrl = 'https://' + archiveDomain + '/newest/' + baseUrl;
             
             console.log(`Redirecting from ${url} to ${targetUrl}`);
             

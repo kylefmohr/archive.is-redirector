@@ -2,6 +2,8 @@ const DEFAULT_DOMAINS = [];
 
 const SKIP_HOMEPAGE_REDIRECT_KEY = 'skipHomepageRedirectEnabled';
 const RECOMMENDED_DOMAINS_URL = 'https://raw.githubusercontent.com/kylefmohr/archive.is-redirector/refs/heads/main/recommended_domains.json';
+const ARCHIVE_DOMAIN_KEY = 'archiveDomain';
+const DEFAULT_ARCHIVE_DOMAIN = 'archive.is';
 
 
 // DOM elements
@@ -12,15 +14,19 @@ const clearAllDomainsButton = document.getElementById('clearAllDomains'); // Ren
 const skipHomepageCheckbox = document.getElementById('skipHomepageRedirect');
 const loadRecommendedDomainsButton = document.getElementById('loadRecommendedDomains');
 const recommendedDomainsStatusElement = document.getElementById('recommendedDomainsStatus');
+const archiveDomainSelect = document.getElementById('archiveDomain');
 
 // Load and display the current domains and settings
 function loadStoredSettings() {
-  chrome.storage.sync.get(['domains', SKIP_HOMEPAGE_REDIRECT_KEY], (result) => {
+  chrome.storage.sync.get(['domains', SKIP_HOMEPAGE_REDIRECT_KEY, ARCHIVE_DOMAIN_KEY], (result) => {
     const domains = result.domains || DEFAULT_DOMAINS; // Will be [] if not set
     displayDomains(domains);
 
     const skipHomepage = result[SKIP_HOMEPAGE_REDIRECT_KEY] === undefined ? true : result[SKIP_HOMEPAGE_REDIRECT_KEY];
     skipHomepageCheckbox.checked = skipHomepage;
+
+    const archiveDomain = result[ARCHIVE_DOMAIN_KEY] || DEFAULT_ARCHIVE_DOMAIN;
+    archiveDomainSelect.value = archiveDomain;
   });
 }
 
@@ -103,6 +109,14 @@ function saveSkipHomepageSetting() {
   });
 }
 
+// Save the archive domain setting
+function saveArchiveDomainSetting() {
+  const domain = archiveDomainSelect.value;
+  chrome.storage.sync.set({ [ARCHIVE_DOMAIN_KEY]: domain }, () => {
+    // console.log(`Archive domain setting saved: ${domain}`);
+  });
+}
+
 // Fetch and apply recommended domains
 async function fetchAndApplyRecommendedDomains() {
   recommendedDomainsStatusElement.textContent = 'Loading...';
@@ -161,6 +175,7 @@ addDomainButton.addEventListener('click', addDomain);
 clearAllDomainsButton.addEventListener('click', clearAllDomains); // Updated
 skipHomepageCheckbox.addEventListener('change', saveSkipHomepageSetting);
 loadRecommendedDomainsButton.addEventListener('click', fetchAndApplyRecommendedDomains);
+archiveDomainSelect.addEventListener('change', saveArchiveDomainSetting);
 
 newDomainInput.addEventListener('keyup', (event) => {
   if (event.key === 'Enter') {
