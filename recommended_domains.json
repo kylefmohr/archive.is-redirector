@@ -1,18 +1,21 @@
 {
     "domains": [
+        "axios.com",
+        "bbc.com",
+        "bloomberg.com",
+        "cnn.com",
+        "economist.com",
+        "forbes.com",
+        "ft.com",
+        "medium.com",
         "nytimes.com",
         "rollingstone.com",
-        "wsj.com",
-        "theguardian.com",
-        "bbc.com",
-        "cnn.com",
-        "washingtonpost.com",
-        "theatlantic.com",
-        "forbes.com",
-        "bloomberg.com",
-        "ft.com",
         "substack.com",
-        "medium.com",
-        "axios.com"
+        "theatlantic.com",
+        "theguardian.com",
+        "theverge.com",
+        "vanityfair.com",
+        "washingtonpost.com",
+        "wsj.com"
     ]
 }
